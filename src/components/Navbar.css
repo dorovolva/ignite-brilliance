@@ -1,0 +1,204 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 68px;
+  background-color: transparent;
+  backdrop-filter: blur(0px);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar.scrolled {
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  height: 58px;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.nav-links {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+.nav-link {
+  font-family: var(--font-body);
+  font-weight: 500;
+  color: var(--text-primary);
+  font-size: 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--primary-red);
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+/* Dropdown */
+.nav-dropdown-wrapper {
+  position: relative;
+  padding: 10px 0;
+}
+
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: var(--bg-white);
+  min-width: 220px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border-radius: var(--radius-card);
+  padding: 12px 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.nav-dropdown.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 24px;
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+  background-color: var(--surface-light);
+  color: var(--primary-red);
+  padding-left: 28px;
+}
+
+/* Animated Hamburger */
+.mobile-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 4px;
+  width: 32px;
+}
+
+.hamburger-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background-color: var(--text-primary);
+  border-radius: 2px;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.25s ease;
+  transform-origin: center;
+}
+
+.mobile-toggle.is-open .hamburger-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.mobile-toggle.is-open .hamburger-bar:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+.mobile-toggle.is-open .hamburger-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+.desktop-only {
+  display: flex;
+}
+
+.mobile-only {
+  display: none;
+}
+
+/* Mobile Menu — compact popup dropdown */
+.mobile-menu {
+  position: absolute;
+  top: 100%;
+  right: 12px;
+  width: 260px;
+  background-color: var(--bg-white);
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.12);
+  border: 1px solid var(--border-light);
+  padding: 8px;
+  z-index: 990;
+  transform: translateY(-12px) scale(0.96);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1), 
+              opacity 0.25s ease,
+              visibility 0.25s;
+}
+
+.mobile-menu.open {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: all;
+}
+
+.mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.mobile-link {
+  font-size: 15px;
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 11px 16px;
+  border-radius: 10px;
+  transition: background-color 0.2s, color 0.2s;
+  display: block;
+}
+
+.mobile-link:hover, .mobile-link.active {
+  background-color: var(--surface-light);
+  color: var(--primary-red);
+}
+
+.mobile-cta-wrapper {
+  padding: 8px 0 4px;
+  border-top: 1px solid var(--border-light);
+  margin-top: 4px;
+}
+
+@media (max-width: 900px) {
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+  .navbar { position: relative; } /* allow dropdown to position below navbar */
+}

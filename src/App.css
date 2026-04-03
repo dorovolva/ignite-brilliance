@@ -1,0 +1,15 @@
+/* General layout overrides and adjustments */
+.main-content {
+  min-height: 100vh;
+  /* Navbar height consideration for anchor links */
+  padding-top: 68px; 
+}
+
+@media (max-width: 900px) {
+  .main-content {
+    /* Accounts for mobile sticky bar and navbar */
+    padding-bottom: 60px;
+  }
+}
+
+/* Page specific or global utility overrides if any going forward */

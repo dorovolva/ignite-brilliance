@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@700&family=Playfair+Display:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap');
+
+:root {
+  /* Colors */
+  --primary-red: #C0001A;
+  --primary-dark: #96001B;
+  --accent-orange: #E85D24;
+  --flame-gold: #F2A623;
+  --bg-white: #FFFFFF;
+  --surface-offwhite: #FFF8F8;
+  --surface-light: #F9F8FB;
+  --text-primary: #1A1A1A;
+  --text-secondary: #6B6B6B;
+  --border-light: #F0E0E0;
+  --border-divider: #E4E0ED;
+
+  /* Typography */
+  --font-h1: 'Playfair Display', serif;
+  --font-h2: 'Playfair Display', serif;
+  --font-body: 'Plus Jakarta Sans', sans-serif;
+
+  /* Layout */
+  --max-width: 1080px;
+  --section-py: 60px;
+  --section-py-mobile: 40px;
+  --gap: 20px;
+  
+  /* Radii */
+  --radius-card: 12px;
+  --radius-button: 8px;
+  --radius-pill: 100px;
+}
+
+/* Global base font — scales everything proportionally */
+html {
+  font-size: 14px; /* was effectively 16px; this shrinks all rem-based values */
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text-primary);
+  background-color: var(--bg-white);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  font-family: var(--font-h1);
+  font-weight: 700;
+  font-size: clamp(2rem, 3.5vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+h2 {
+  font-family: var(--font-h2);
+  font-weight: 600;
+  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
+  line-height: 1.2;
+}
+
+h3 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: clamp(1rem, 2vw, 1.2rem);
+}
+
+p {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+  transition: all 0.2s ease;
+}
+
+ul {
+  list-style: none;
+}
+
+/* Utilities */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.section {
+  padding: var(--section-py) 0;
+}
+
+.alt-bg {
+  background-color: var(--surface-light);
+}
+
+.bg-white {
+  background-color: var(--bg-white);
+}
+
+@media (max-width: 768px) {
+  html {
+    font-size: 13px;
+  }
+
+  .section {
+    padding: var(--section-py-mobile) 0;
+  }
+}
+
+/* Animations */
+.fade-in-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hover-shadow {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+  transform: translateY(-4px);
+}

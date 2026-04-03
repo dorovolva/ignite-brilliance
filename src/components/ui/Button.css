@@ -1,0 +1,112 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 15px;
+  border-radius: var(--radius-button);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  transition: all 0.3s ease;
+  gap: 8px;
+}
+
+.btn-icon {
+  display: flex;
+  align-items: center;
+}
+
+/* Primary Button - Deep Red */
+.btn-primary {
+  background-color: var(--primary-red);
+  color: var(--bg-white);
+  box-shadow: 0 4px 14px rgba(192, 0, 26, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  box-shadow: 0 8px 25px rgba(192, 0, 26, 0.4);
+  transform: translateY(-3px) scale(1.02);
+}
+
+/* Secondary Button - Flame Orange */
+.btn-secondary {
+  background-color: var(--accent-orange);
+  color: var(--bg-white);
+  box-shadow: 0 4px 14px rgba(232, 93, 36, 0.2);
+}
+
+.btn-secondary:hover {
+  background-color: #d1501c;
+  box-shadow: 0 6px 20px rgba(232, 93, 36, 0.3);
+  transform: translateY(-2px);
+}
+
+/* Outline White Button */
+.btn-outline-white {
+  background-color: transparent;
+  color: var(--bg-white);
+  border: 1px solid var(--bg-white);
+}
+
+.btn-outline-white:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* White Solid Button */
+.btn-white {
+  background-color: var(--bg-white);
+  color: #3b0066; /* Purple text as requested */
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+}
+
+.btn-white:hover {
+  background-color: #fca5a5;
+  color: var(--primary-dark);
+  transform: translateY(-2px);
+}
+
+/* White outline with purple border */
+.btn-outline-purple {
+  background-color: var(--bg-white);
+  color: #3b0066;
+  border: 1px solid #3b0066;
+}
+
+.btn-outline-purple:hover {
+  background-color: #f7f3f9;
+  transform: translateY(-2px);
+}
+
+/* Purple filled */
+.btn-purple {
+  background-color: #3b0066;
+  color: var(--bg-white);
+  box-shadow: 0 4px 14px rgba(59, 0, 102, 0.2);
+}
+
+.btn-purple:hover {
+  background-color: #2a0047;
+  transform: translateY(-2px);
+}
+
+/* Simple Text Link */
+.btn-text {
+  background-color: transparent;
+  color: #3b0066;
+  padding: 0;
+  font-weight: 600;
+  border-radius: 0;
+}
+
+.btn-text:hover {
+  text-decoration: underline;
+}
+
+.btn-text.orange {
+  color: var(--accent-orange);
+}

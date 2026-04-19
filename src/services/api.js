@@ -61,11 +61,11 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     const fetchOptions = {
       method,
       redirect: 'follow',
-      mode: useHeaders ? 'no-cors' : 'cors' // Use no-cors for POST to bypass preflight
+      mode: useHeaders ? 'no-cors' : 'cors',
+      cache: method === 'GET' ? 'no-cache' : 'default' // Force fresh data on GETs
     };
 
     if (useHeaders) {
-      // With no-cors, we must use simple Content-Type
       fetchOptions.headers = {
         'Content-Type': 'text/plain;charset=utf-8'
       };
@@ -78,7 +78,8 @@ async function fetchAPI(action, params = {}, method = 'GET') {
 
     const res = await fetch(url.toString(), fetchOptions);
 
-    // If no-cors, we can't read the response, so we return optimistic success
+    // If no-cors (Write actions like addNews), we can't read the response.
+    // We return optimistic success.
     if (fetchOptions.mode === 'no-cors') {
       return { success: true, opaque: true };
     }
@@ -92,8 +93,8 @@ async function fetchAPI(action, params = {}, method = 'GET') {
 
     return data;
   } catch (err) {
-    // If it's an opaque response error from trying to parse JSON, it's actually a success
-    if (err instanceof SyntaxError && method !== 'GET') {
+    // Handling Opaque Response (Common with GAS + no-cors)
+    if (method !== 'GET' && (err instanceof SyntaxError || err.message.includes('opaque'))) {
       return { success: true, opaque: true };
     }
 

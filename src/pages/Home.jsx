@@ -59,7 +59,7 @@ const Home = () => {
           
           <div className="hero-visual fade-in-up hide-on-mobile">
              <div className="hero-image-wrapper" ref={mascotRef}>
-                <img src={settings?.heroImageUrl || "/masot.png"} alt="Ignite Brilliance Mascot" className="mascot-img" />
+                <img src={settings?.heroImageUrl || "/mascot.png"} alt="Ignite Brilliance Mascot" className="mascot-img" />
              </div>
           </div>
         </div>

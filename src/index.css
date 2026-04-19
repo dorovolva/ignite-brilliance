@@ -155,7 +155,7 @@ img {
 }
 
 section {
-  contain: layout; /* Helps with layout stability during scroll */
+  /* Removed contain: layout; as it breaks position: sticky on child elements */
 }
 
 /* Admin Utilities */

@@ -8,6 +8,7 @@ import { api } from '../services/api';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [hasNewNews, setHasNewNews] = useState(false);
   const [settings, setSettings] = useState(null);
   const location = useLocation();

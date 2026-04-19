@@ -55,15 +55,23 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
   }
 
+  const useHeaders = method !== 'GET';
+  
   try {
-    const res = await fetch(url.toString(), {
+    const fetchOptions = {
       method,
-      headers: {
+    };
+
+    if (useHeaders) {
+      const token = sessionStorage.getItem('adminToken') || '';
+      fetchOptions.headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
-      },
-      body: method !== 'GET' ? JSON.stringify(params) : undefined,
-    });
+      };
+      fetchOptions.body = JSON.stringify(params);
+    }
+
+    const res = await fetch(url.toString(), fetchOptions);
 
     const data = await res.json();
     if (data.error) throw new Error(data.error);

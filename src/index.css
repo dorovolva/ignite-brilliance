@@ -36,12 +36,26 @@ html {
   font-size: 16px;
 }
 
+@media (min-width: 2500px) { /* Massive 4K displays */
+  html { font-size: 22px; }
+  :root { --max-width: 1800px; }
+}
+
+@media (min-width: 1600px) { /* Large 2K/TV Displays */
+  html { font-size: 18px; }
+  :root { --max-width: 1440px; }
+}
+
 @media (max-width: 1400px) {
   html { font-size: 15px; }
 }
 
 @media (max-width: 1080px) {
   html { font-size: 14px; }
+}
+
+@media (max-width: 380px) { /* Extra-small mobile screens */
+  html { font-size: 12.5px; }
 }
 
 * {

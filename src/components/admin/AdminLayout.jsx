@@ -4,10 +4,9 @@ import { LayoutGrid, Newspaper, Image as ImageIcon, Settings, Lock, LogOut } fro
 import './AdminLayout.css';
 
 const TABS = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutGrid, path: '/admin/dashboard' },
   { id: 'news', label: 'News & Updates', icon: Newspaper, path: '/admin/news' },
   { id: 'gallery', label: 'Gallery', icon: ImageIcon, path: '/admin/gallery' },
-  { id: 'settings', label: 'Basic Settings', icon: Settings, path: '/admin/settings' },
+  { id: 'settings', label: 'Contact Details', icon: Settings, path: '/admin/settings' },
   { id: 'password', label: 'Change Password', icon: Lock, path: '/admin/password' },
 ];
 
@@ -34,8 +33,8 @@ export default function AdminLayout() {
       {/* Top Navbar */}
       <header className="admin-header">
         <div className="admin-logo">
-          <Link to="/admin/dashboard" className="text-white font-bold text-lg decoration-none">
-            Ignite Brilliance Admin
+          <Link to="/admin/news" className="text-white font-bold text-lg decoration-none">
+             Ignite Brilliance Admin
           </Link>
         </div>
         

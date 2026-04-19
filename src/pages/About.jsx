@@ -1,17 +1,23 @@
 import React from 'react';
 import { Target, CheckCircle2, ChevronRight, Award, Flame, Globe, BookOpen, Brain } from 'lucide-react';
 import Badge from '../components/ui/Badge';
+import SEO from '../components/SEO';
 import './About.css';
 
 const About = () => {
   return (
     <div className="about-page">
+      <SEO 
+        title="About Ignite Brilliance – AI Career Hub in Kerala"
+        description="Founded to bring scientific clarity to career choices. We combine AI psychometrics with expert human guidance for students across Kannur and Kerala."
+        keywords="ai career assessment kerala, expert career counsellor kannur, student service centre payyavoor"
+      />
       {/* HERO */}
       <section className="about-hero hero-section">
         <div className="container hero-container">
           <div className="hero-content fade-in-up">
             <Badge variant="primary" className="hero-badge">About Us</Badge>
-            <h1>One Centre.<br/>Every Answer.<br/>Zero Confusion.</h1>
+            <h1>Ignite Brilliance – Kerala's First AI-Powered Career Hub</h1>
             <p className="hero-subline">
               The Ekajalaka (single window) model means you never have to visit multiple offices or consultants again. Education, career, and government services — handled in one trusted place.
             </p>

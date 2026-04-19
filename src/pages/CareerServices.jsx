@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Brain, ArrowRight, GraduationCap, Users, BookOpen, Compass, Award, Map, Globe, PenTool, CheckCircle2 } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
+import SEO from '../components/SEO';
 import './CareerServices.css';
 
 const CareerServices = () => {
@@ -69,12 +70,17 @@ const CareerServices = () => {
 
   return (
     <div className="career-page">
+      <SEO 
+        title="AI Skill Scan Career Assessment for Students | Ignite Brilliance"
+        description="Take our AI-powered psychometric test to discover your strengths, aptitudes, and ideal career paths. For grades 5–12 and graduates."
+        keywords="ai skill scan, psychometric test, career assessment for students, career guidance kerala, how to choose a career after 12th"
+      />
       {/* HERO */}
       <section className="career-hero hero-section">
         <div className="container hero-container text-center" style={{gridTemplateColumns: '1fr', paddingBottom: '40px'}}>
           <div className="hero-content fade-in-up" style={{alignItems: 'center'}}>
             <Badge variant="primary">Education & Career</Badge>
-            <h1>Scientific Career Guidance.<br/>For Every Stage of Life.</h1>
+            <h1>AI Skill Scan – Discover Your True Potential</h1>
             <p className="hero-subline" style={{textAlign: 'center'}}>
               From Grade 5 to working professionals — AI-powered assessments and certified counsellors who understand Kerala students.
             </p>

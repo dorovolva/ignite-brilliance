@@ -13,7 +13,7 @@ export default function AdminLogin() {
 
   useEffect(() => {
     if (sessionStorage.getItem('adminToken')) {
-      navigate('/admin/dashboard');
+      navigate('/admin/news');
     }
   }, [navigate]);
 
@@ -41,7 +41,7 @@ export default function AdminLogin() {
       // Reset attempts logic (in a real app, this should be server-side)
       localStorage.removeItem('adminFailedAttempts');
       
-      navigate('/admin/dashboard');
+      navigate('/admin/news');
     } catch (err) {
       setError('Incorrect password. Try again.');
       

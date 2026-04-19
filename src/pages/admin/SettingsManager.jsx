@@ -61,7 +61,7 @@ export default function SettingsManager() {
       const res = await api.updateSettings(settings);
       setSettings(res);
       setOriginalSettings(JSON.stringify(res));
-      showToast('success', '✓ Settings saved successfully! Changes are now live on the website.');
+      showToast('success', '✓ Details saved successfully! Changes are now live on the website.');
     } catch (err) {
       console.error('Save error:', err);
       showToast('error', '✕ Failed to save: ' + err.message);
@@ -79,7 +79,7 @@ export default function SettingsManager() {
   return (
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px', flexWrap: 'wrap', gap: '12px' }}>
-        <h1 className="admin-page-title" style={{ marginBottom: 0 }}>Basic Settings</h1>
+        <h1 className="admin-page-title" style={{ marginBottom: 0 }}>Contact Details & Announcements</h1>
         {hasUnsavedChanges && (
           <span style={{ background: '#fff3cd', color: '#856404', padding: '6px 14px', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>
             <AlertCircle size={14} /> Unsaved changes
@@ -110,74 +110,11 @@ export default function SettingsManager() {
       `}} />
       
       <form onSubmit={handleSave}>
-        {/* ── SECTION 1: Branding ── */}
-        <div className="admin-card">
-          <h2 className="admin-section-title">✨ Branding & Visuals</h2>
-          <p style={{ color: '#6b6b6b', fontSize: '0.85rem', marginBottom: '20px' }}>
-            Upload your logo and the main character image for the home page.
-          </p>
-          <div style={gridStyle}>
-            <div className="admin-form-group">
-              <label className="admin-label">Brand Logo</label>
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <input name="logoUrl" className="admin-input" style={inputStyle}
-                  placeholder="Logo URL..." value={settings.logoUrl || ''} onChange={handleChange} />
-                <label className="admin-btn secondary" style={{ cursor: 'pointer', margin: 0, padding: '10px 16px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-                  Choose File
-                  <input type="file" hidden accept="image/*" onChange={async (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    setSaving(true);
-                    try {
-                      const reader = new FileReader();
-                      reader.onloadend = async () => {
-                        const res = await api.uploadImage(reader.result, file.name, 'branding');
-                        setSettings(prev => ({ ...prev, logoUrl: res.url }));
-                        showToast('success', 'Logo uploaded!');
-                      };
-                      reader.readAsDataURL(file);
-                    } catch (err) { showToast('error', 'Upload failed'); }
-                    finally { setSaving(false); }
-                  }} />
-                </label>
-              </div>
-              {settings.logoUrl && <img src={settings.logoUrl} alt="Logo Preview" style={{ height: '40px', marginTop: '10px', objectFit: 'contain', background: '#333', padding: '5px', borderRadius: '4px' }} />}
-            </div>
-
-            <div className="admin-form-group">
-              <label className="admin-label">Hero Mascot Character</label>
-              <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                <input name="heroImageUrl" className="admin-input" style={inputStyle}
-                  placeholder="Hero image URL..." value={settings.heroImageUrl || ''} onChange={handleChange} />
-                <label className="admin-btn secondary" style={{ cursor: 'pointer', margin: 0, padding: '10px 16px', display: 'flex', alignItems: 'center', whiteSpace: 'nowrap' }}>
-                  Choose File
-                  <input type="file" hidden accept="image/*" onChange={async (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    setSaving(true);
-                    try {
-                      const reader = new FileReader();
-                      reader.onloadend = async () => {
-                        const res = await api.uploadImage(reader.result, file.name, 'branding');
-                        setSettings(prev => ({ ...prev, heroImageUrl: res.url }));
-                        showToast('success', 'Hero image uploaded!');
-                      };
-                      reader.readAsDataURL(file);
-                    } catch (err) { showToast('error', 'Upload failed'); }
-                    finally { setSaving(false); }
-                  }} />
-                </label>
-              </div>
-              {settings.heroImageUrl && <img src={settings.heroImageUrl} alt="Hero Preview" style={{ height: '60px', marginTop: '10px', objectFit: 'contain', borderRadius: '4px', border: '1px solid #ddd' }} />}
-            </div>
-          </div>
-        </div>
-
-        {/* ── SECTION 2: Contact ── */}
+        {/* ── SECTION 1: Contact Information ── */}
         <div className="admin-card">
           <h2 className="admin-section-title">📞 Contact Information</h2>
           <p style={{ color: '#6b6b6b', fontSize: '0.85rem', marginBottom: '20px' }}>
-            These details appear in the Footer, Contact page, and WhatsApp button.
+            These details appear in the Footer, Contact page, and WhatsApp buttons site-wide.
           </p>
           <div style={gridStyle}>
             <div className="admin-form-group">
@@ -226,76 +163,11 @@ export default function SettingsManager() {
           </div>
         </div>
 
-        {/* ── SECTION 2: Hero ── */}
-        <div className="admin-card">
-          <h2 className="admin-section-title">🏠 Homepage Hero</h2>
-          <p style={{ color: '#6b6b6b', fontSize: '0.85rem', marginBottom: '20px' }}>
-            The tagline shown below the main heading on the Home page.
-          </p>
-          <div className="admin-form-group">
-            <label className="admin-label">Hero Tagline</label>
-            <textarea name="heroTagline" className="admin-textarea"
-              style={{ minHeight: '80px', width: '100%' }}
-              placeholder="Kerala's Premier Centre for Career Planning & Government Services"
-              value={settings.heroTagline || ''} onChange={handleChange} />
-            <small style={{ color: '#999' }}>Tip: Keep it under 150 characters for best display.</small>
-          </div>
-        </div>
-
-        {/* ── SECTION 3: Footer Content ── */}
-        <div className="admin-card">
-          <h2 className="admin-section-title">🦶 Footer Content</h2>
-          <p style={{ color: '#6b6b6b', fontSize: '0.85rem', marginBottom: '20px' }}>
-            Customize the tagline shown in the website Footer.
-          </p>
-          <div className="admin-form-group">
-            <label className="admin-label">Footer Tagline</label>
-            <input name="footerTagline" className="admin-input" style={inputStyle}
-              placeholder="Right Education for the Bright Future"
-              value={settings.footerTagline || ''} onChange={handleChange} />
-          </div>
-        </div>
-
-        {/* ── SECTION 4: Social Links ── */}
-        <div className="admin-card">
-          <h2 className="admin-section-title">🔗 Social Media Links</h2>
-          <p style={{ color: '#6b6b6b', fontSize: '0.85rem', marginBottom: '20px' }}>
-            These links appear in the Footer. Leave blank to hide a platform.
-          </p>
-          <div style={gridStyle}>
-            <div className="admin-form-group">
-              <label className="admin-label">Instagram URL</label>
-              <input name="instagramUrl" className="admin-input" style={inputStyle}
-                placeholder="https://instagram.com/ignitebrilliance"
-                value={settings.instagramUrl || ''} onChange={handleChange} />
-            </div>
-            <div className="admin-form-group">
-              <label className="admin-label">Facebook URL</label>
-              <input name="facebookUrl" className="admin-input" style={inputStyle}
-                placeholder="https://facebook.com/ignitebrilliance"
-                value={settings.facebookUrl || ''} onChange={handleChange} />
-            </div>
-            <div className="admin-form-group">
-              <label className="admin-label">YouTube URL (Optional)</label>
-              <input name="youtubeUrl" className="admin-input" style={inputStyle}
-                placeholder="https://youtube.com/@ignitebrilliance"
-                value={settings.youtubeUrl || ''} onChange={handleChange} />
-            </div>
-            <div className="admin-form-group">
-              <label className="admin-label">WhatsApp Group Link</label>
-              <input name="whatsappGroupUrl" className="admin-input" style={inputStyle}
-                placeholder="https://chat.whatsapp.com/..."
-                value={settings.whatsappGroupUrl || ''} onChange={handleChange} />
-              <small style={{ color: '#999', marginTop: '4px', display: 'block' }}>Used for "Join WhatsApp Group" CTA on Home page.</small>
-            </div>
-          </div>
-        </div>
-
-        {/* ── SECTION 5: Banner ── */}
+        {/* ── SECTION 2: Banner ── */}
         <div className="admin-card">
           <h2 className="admin-section-title">📢 Announcement Banner</h2>
           <p style={{ color: '#6b6b6b', fontSize: '0.85rem', marginBottom: '20px' }}>
-            A colored strip shown at the top of the website. Visitors can dismiss it.
+            A solid colored strip shown at the top of the website. Visitors can dismiss it. Update the text to un-dismiss it for everyone.
           </p>
           <div className="admin-form-group" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '16px' }}>
             <input name="bannerActive" type="checkbox" id="bannerActive"
@@ -307,28 +179,11 @@ export default function SettingsManager() {
           </div>
           
           {settings.bannerActive && (
-            <div style={gridStyle}>
-              <div className="admin-form-group" style={{ gridColumn: '1 / -1' }}>
-                <label className="admin-label">Banner Text</label>
-                <input name="bannerText" className="admin-input" style={inputStyle}
-                  placeholder="KEAM 2026 registration now open — Contact us for guidance!"
-                  value={settings.bannerText || ''} onChange={handleChange} />
-              </div>
-              <div className="admin-form-group">
-                <label className="admin-label">Banner Color</label>
-                <select name="bannerColor" className="admin-select" value={settings.bannerColor || 'red'} onChange={handleChange}>
-                  <option value="red">🔴 Red (Urgent)</option>
-                  <option value="gold">🟡 Gold (Highlight)</option>
-                  <option value="dark">⚫ Dark (Neutral)</option>
-                </select>
-              </div>
-              <div className="admin-form-group">
-                <label className="admin-label">Banner Link (Optional)</label>
-                <input name="bannerLink" className="admin-input" style={inputStyle}
-                  placeholder="https://..."
-                  value={settings.bannerLink || ''} onChange={handleChange} />
-                <small style={{ color: '#999', marginTop: '4px', display: 'block' }}>Adds a "Learn More" link to the banner.</small>
-              </div>
+            <div className="admin-form-group">
+              <label className="admin-label">Banner Text</label>
+              <input name="bannerText" className="admin-input" style={inputStyle}
+                placeholder="KEAM 2026 registration now open — Contact us for guidance!"
+                value={settings.bannerText || ''} onChange={handleChange} />
             </div>
           )}
         </div>

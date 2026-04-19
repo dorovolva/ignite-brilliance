@@ -10,10 +10,10 @@ const Footer = () => {
 
   useEffect(() => {
     const fetchSettings = async () => {
-       try {
-         const data = await api.getSettings();
-         setSettings(data);
-       } catch (e) {}
+      try {
+        const data = await api.getSettings();
+        setSettings(data);
+      } catch (e) { }
     };
     fetchSettings();
   }, []);
@@ -21,17 +21,17 @@ const Footer = () => {
   return (
     <footer className="footer section">
       <div className="container footer-container">
-        
+
         {/* Column 1 */}
         <div className="footer-col brand-col">
           <div className="footer-logo">
-             <img src={settings?.logoUrl || "/assets/logo-white.png"} alt="Ignite Brilliance" onError={(e) => {
-               e.target.style.display = 'none';
-               e.target.nextSibling.style.display = 'block';
-             }} />
-             <span style={{ display: 'none', fontWeight: 800, fontSize: '20px', color: 'var(--bg-white)', fontFamily: 'var(--font-h1)' }}>
-               Ignite Brilliance
-             </span>
+            <img src={settings?.logoUrl || "/assets/logo-white.png"} alt="Ignite Brilliance" onError={(e) => {
+              e.target.style.display = 'none';
+              e.target.nextSibling.style.display = 'block';
+            }} />
+            <span style={{ display: 'none', fontWeight: 800, fontSize: '20px', color: 'var(--bg-white)', fontFamily: 'var(--font-h1)' }}>
+              Ignite Brilliance
+            </span>
           </div>
           <h4 className="footer-tagline">
             {settings?.footerTagline || 'Right Education for the Bright Future'}
@@ -86,7 +86,7 @@ const Footer = () => {
           <ul className="footer-contact">
             <li>
               <MapPin size={18} />
-              <span>{settings?.address || 'Payyavoor, Kannur – 670633'}</span>
+              <span>{settings?.address || 'Payyavoor Angadi Complex , Block D , Third Floor, Payyavoor-Sreekandapuram Road, 670633'}</span>
             </li>
             <li>
               <Phone size={18} />

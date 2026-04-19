@@ -40,6 +40,18 @@ export default function GalleryManager() {
     }
   };
 
+  const fetchGallery = async () => {
+    setLoading(true);
+    try {
+      const data = await api.getGallery();
+      setImages(data || []);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchGallery();
   }, []);
@@ -142,10 +154,7 @@ export default function GalleryManager() {
                 </div>
              </div>
 
-             <div className="admin-form-group" style={{ opacity: 0.6 }}>
-                <label className="admin-label">Manual URL (Optional fallback)</label>
-                <input className="admin-input" style={{width: '100%', fontSize: '0.8rem'}} placeholder="https://..." value={newImgUrl} onChange={e => setNewImgUrl(e.target.value)} />
-             </div>
+             {/* Manual URL input removed for strict upload enforcement */}
 
              <div style={{ display: 'flex', gap: '16px', marginTop: '32px', borderTop: '1px solid #eee', paddingTop: '24px' }}>
                 <button type="submit" className="admin-btn" disabled={uploading || !newImgUrl}>{uploading ? 'Finalizing...' : 'Save to Gallery'}</button>

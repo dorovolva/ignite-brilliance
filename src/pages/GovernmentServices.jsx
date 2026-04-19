@@ -2,17 +2,23 @@ import React from 'react';
 import { ShieldCheck, FileText, Droplets, CreditCard, Ticket, Clock, CheckCircle2, FileCheck, PhoneCall } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
+import SEO from '../components/SEO';
 import './GovernmentServices.css';
 
 const GovernmentServices = () => {
   return (
     <div className="gov-page">
+      <SEO 
+        title="Government & Utility Services Centre in Payyavoor | Ignite Brilliance"
+        description="Authorised Republic of India service partner in Payyavoor. Fast assistance with Passport, PAN card, Aadhaar updates, and utility bill payments."
+        keywords="government services payyavoor, passport assistance kannur, pan card service kannur, aadhaar update kerala, e-aadhaar centre"
+      />
       {/* HERO */}
       <section className="gov-hero hero-section">
         <div className="container hero-container text-center" style={{gridTemplateColumns: '1fr', paddingBottom: '40px'}}>
           <div className="hero-content fade-in-up" style={{alignItems: 'center'}}>
             <Badge variant="accent">Government Services</Badge>
-            <h1>All Your Government Work.<br/>Done Here.</h1>
+            <h1>Government & Utility Services – Verified Centre in Kannur</h1>
             <p className="hero-subline" style={{textAlign: 'center', maxWidth: '700px'}}>
               Passport, PAN, Aadhaar, utility payments, ticket booking and more — handled by authorised government service partners. No queues. No confusion.
             </p>
@@ -163,7 +169,7 @@ const GovernmentServices = () => {
           <p className="mb-4 text-secondary">No queues. No delays. WhatsApp us your requirement.</p>
           <div className="contact-display">
             <span className="big-number">+91 9456 241 625</span>
-            <p>Payyavoor, Kannur – 670633</p>
+            <p>Payyavoor Angadi Complex , Block D , Third Floor, Payyavoor-Sreekandapuram Road, 670633</p>
           </div>
           <div className="hero-ctas" style={{justifyContent: 'center', marginTop: '32px'}}>
             <Button href="https://wa.me/919456241625" variant="secondary" icon={<span style={{color: '#fff'}}>❖</span>}>WhatsApp Us Now</Button>

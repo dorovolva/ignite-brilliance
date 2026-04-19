@@ -26,22 +26,14 @@ export default function AnnouncementBanner() {
   if (!settings || !settings.bannerActive || dismissed) return null;
 
   const handleDismiss = () => {
-    localStorage.setItem('ib_banner_dismissed', 'true');
+    // Save the specific text so if admin changes text, the banner reappears
+    localStorage.setItem('ib_banner_dismissed_text', settings.bannerText);
     setDismissed(true);
-  };
-
-  const getBgColor = () => {
-    switch(settings.bannerColor) {
-      case 'gold': return '#b28900';
-      case 'dark': return '#1a1a1a';
-      case 'red': 
-      default: return '#C0001A';
-    }
   };
 
   return (
     <div className="announcement-bar" style={{
-      background: getBgColor(),
+      background: '#C0001A', // Standard Red
       color: 'white',
       padding: '8px 24px',
       display: 'flex',
@@ -69,11 +61,6 @@ export default function AnnouncementBanner() {
       `}} />
       <div style={{ flex: 1, paddingRight: '20px' }}>
         <span>{settings.bannerText}</span>
-        {settings.bannerLink && (
-          <a href={settings.bannerLink} style={{ color: 'white', marginLeft: '10px', textDecoration: 'underline', fontWeight: 600 }}>
-            Learn More
-          </a>
-        )}
       </div>
       <button 
         onClick={handleDismiss}

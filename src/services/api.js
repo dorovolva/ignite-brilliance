@@ -96,7 +96,7 @@ const MOCK_DB = {
     contactPhone1: '+91 98765 43210',
     contactEmail: 'hello@ignitebrilliance.com',
     whatsapp: '+919876543210',
-    address: 'Near Govt Hospital, Payyavoor, Kannur, Kerala 670633',
+    address: 'Payyavoor Angadi Complex , Block D , Third Floor, Payyavoor-Sreekandapuram Road, 670633',
     heroTagline: 'Kerala\'s Premier Centre for Career Planning & Government Services',
     bannerActive: true,
     bannerText: 'KEAM 2026 registration now open — Contact us for guidance!',
@@ -111,7 +111,7 @@ async function handleMockAPI(action, params, method) {
   await new Promise(r => setTimeout(r, 500)); // Simulate network
   
   // Auth Check
-  const publicActions = ['login', 'getNews', 'getGallery', 'getSettings'];
+  const publicActions = ['login', 'getNews', 'getGallery', 'getSettings', 'subscribe'];
   if (!publicActions.includes(action)) {
     const token = sessionStorage.getItem('adminToken');
     if (!token) throw new Error('Unauthorized');
@@ -163,6 +163,16 @@ async function handleMockAPI(action, params, method) {
       return { success: true };
 
     case 'getLogs': return MOCK_DB.logs.slice(0, 5); // Return last 5
+    
+    case 'uploadToDrive':
+      logAction('Uploaded Mock File', params.filename);
+      // For local development without a backend, we just return the raw base64 string 
+      // so the browser renders it perfectly without needing external storage!
+      return { url: params.base64, success: true };
+      
+    case 'subscribe':
+      logAction('New Subscriber', params.email);
+      return { success: true };
 
     default: throw new Error('Unknown action: ' + action);
   }

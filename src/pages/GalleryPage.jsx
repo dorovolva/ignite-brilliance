@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { api } from '../services/api';
 import { Loader2, Maximize2 } from 'lucide-react';
 import GLightbox from 'glightbox';
+import SEO from '../components/SEO';
 import 'glightbox/dist/css/glightbox.min.css';
 import './GalleryPage.css';
 
@@ -56,9 +57,14 @@ const GalleryPage = () => {
 
   return (
     <div className="gallery-page">
+      <SEO 
+        title="Our Gallery – Counselling Sessions & Events | Ignite Brilliance"
+        description="See real counselling sessions, student success moments, and office life at Ignite Brilliance Ekajalaka Kendra, Payyavoor."
+        keywords="career counselling gallery, ignite brilliance events, payyavoor centre photos"
+      />
       <section className="gallery-hero">
         <div className="container">
-          <h1>Our Gallery</h1>
+          <h1>Moments at Ignite Brilliance</h1>
           <p>A glimpse into our centre, events, and the bright futures we help build.</p>
         </div>
       </section>

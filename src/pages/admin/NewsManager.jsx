@@ -261,13 +261,8 @@ export default function NewsManager() {
                     disabled={loadingUpload} 
                  />
               </div>
-              <div style={{ marginTop: '10px', fontSize: '0.75rem', color: '#999', display: 'flex', justifyContent: 'space-between' }}>
-                <span>* Automatically saved to Google Drive bridge</span>
-                <span style={{ cursor: 'pointer', textDecoration: 'underline' }} onClick={(e) => {
-                  e.stopPropagation();
-                  const url = prompt("Enter Image URL manually:", thumbnailUrl);
-                  if (url !== null) setThumbnailUrl(url);
-                }}>Manual URL</span>
+              <div style={{ marginTop: '10px', fontSize: '0.75rem', color: '#999' }}>
+                * Automatically saved to Google Drive bridge
               </div>
             </div>
 

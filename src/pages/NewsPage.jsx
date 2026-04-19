@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { api } from '../services/api';
 import { Loader2, Calendar, Tag, ChevronLeft, Share2 } from 'lucide-react';
 import Button from '../components/ui/Button';
+import SEO from '../components/SEO';
 import './NewsPage.css';
 
 const NewsPage = () => {
@@ -70,6 +71,11 @@ const NewsPage = () => {
     return (
       <div className="news-detail-page">
         <div className="container">
+          <SEO 
+            title={`${article.title} | Ignite Brilliance`}
+            description={article.summary}
+            keywords={`${article.category}, education news kerala, admission updates`}
+          />
           <Link to="/news" className="back-link">
             <ChevronLeft size={20} /> Back to All News
           </Link>
@@ -110,9 +116,14 @@ const NewsPage = () => {
   // LISTING VIEW
   return (
     <div className="news-listing-page">
+      <SEO 
+        title="Education News Kerala – Exam Updates, Admission Alerts & Career Tips"
+        description="Latest KEAM, NEET, JEE, scholarship, and admission news. Stay updated with Ignite Brilliance."
+        keywords="education news kerala, keam updates, neet admission alerts, scholarship news"
+      />
       <section className="news-hero">
         <div className="container">
-          <h1>News & Updates</h1>
+          <h1>Latest Education News & Updates</h1>
           <p>The latest educational news, scholarship updates, and centre announcements.</p>
         </div>
       </section>

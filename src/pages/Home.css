@@ -1,7 +1,7 @@
-/* Home Hero Section */
 .hero-section {
   height: 100vh;
   min-height: 600px;
+  max-height: 1200px; /* Constrain vertical blow-up on 4K portraits */
   height: 100dvh;
   display: flex;
   align-items: center;

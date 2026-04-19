@@ -60,14 +60,20 @@ async function fetchAPI(action, params = {}, method = 'GET') {
   try {
     const fetchOptions = {
       method,
+      redirect: 'follow'
     };
 
     if (useHeaders) {
-      const token = sessionStorage.getItem('adminToken') || '';
+      // Use text/plain to avoid CORS preflight (OPTIONS)
+      // GAS can still parse the body via e.postData.contents
       fetchOptions.headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        'Content-Type': 'text/plain;charset=utf-8'
       };
+      
+      // Pass token in URL params for POST to avoid custom headers preflight
+      const token = sessionStorage.getItem('adminToken') || '';
+      if (token) url.searchParams.append('token', token);
+      
       fetchOptions.body = JSON.stringify(params);
     }
 
@@ -83,8 +89,14 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     return data;
   } catch (err) {
     console.error(`Remote API error for ${action}:`, err);
-    // FALLBACK TO MOCK ON ERROR TO PREVENT CRACKED PAGE
-    return handleMockAPI(action, params, method);
+    
+    // Only fallback for GET requests (Viewing the site)
+    // NEVER fallback for POST (Saving data) to prevent false success
+    if (method === 'GET') {
+      return handleMockAPI(action, params, method);
+    }
+    
+    throw err; // Let the UI show an actual error for failed saves
   }
 }
 

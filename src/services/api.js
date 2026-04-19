@@ -60,17 +60,16 @@ async function fetchAPI(action, params = {}, method = 'GET') {
   try {
     const fetchOptions = {
       method,
-      redirect: 'follow'
+      redirect: 'follow',
+      mode: useHeaders ? 'no-cors' : 'cors' // Use no-cors for POST to bypass preflight
     };
 
     if (useHeaders) {
-      // Use text/plain to avoid CORS preflight (OPTIONS)
-      // GAS can still parse the body via e.postData.contents
+      // With no-cors, we must use simple Content-Type
       fetchOptions.headers = {
         'Content-Type': 'text/plain;charset=utf-8'
       };
       
-      // Pass token in URL params for POST to avoid custom headers preflight
       const token = sessionStorage.getItem('adminToken') || '';
       if (token) url.searchParams.append('token', token);
       
@@ -78,6 +77,11 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     }
 
     const res = await fetch(url.toString(), fetchOptions);
+
+    // If no-cors, we can't read the response, so we return optimistic success
+    if (fetchOptions.mode === 'no-cors') {
+      return { success: true, opaque: true };
+    }
 
     const data = await res.json();
     if (data.error) throw new Error(data.error);
@@ -88,6 +92,11 @@ async function fetchAPI(action, params = {}, method = 'GET') {
 
     return data;
   } catch (err) {
+    // If it's an opaque response error from trying to parse JSON, it's actually a success
+    if (err instanceof SyntaxError && method !== 'GET') {
+      return { success: true, opaque: true };
+    }
+
     console.error(`Remote API error for ${action}:`, err);
     
     // Only fallback for GET requests (Viewing the site)

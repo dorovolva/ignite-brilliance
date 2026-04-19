@@ -113,7 +113,7 @@ const Footer = () => {
 
       <div className="container">
         <div className="footer-bottom">
-          <p>&copy; {new Date().getFullYear()} Ignite Brilliance Ekajalaka Kendra. All rights reserved. | A Project Under DAKHS Digital Revolution Pvt. Ltd.</p>
+          <p>&copy; {new Date().getFullYear()} Ignite Brilliance Ekajalaka Kendra. All rights reserved. | A Project Under DAKHS Digital Revolution Pvt. Ltd. | <Link to="/admin" className="footer-admin-link">Admin Section</Link></p>
           <p className="footer-dev">
             Developed by{' '}
             <a href="https://dorovolva.vercel.app" target="_blank" rel="noreferrer" className="footer-dev-link">

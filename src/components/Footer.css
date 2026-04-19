@@ -143,16 +143,22 @@
   margin: 0;
 }
 
-.footer-dev-link {
-  color: var(--flame-gold);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  transition: color 0.2s, opacity 0.2s;
-}
-
 .footer-dev-link:hover {
   color: var(--accent-orange);
   opacity: 0.9;
+}
+
+.footer-admin-link {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  font-size: 11px;
+  margin-left: 5px;
+}
+
+.footer-admin-link:hover {
+  color: var(--bg-white);
 }
 
 @media (max-width: 900px) {

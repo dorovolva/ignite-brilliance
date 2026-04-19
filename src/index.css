@@ -151,8 +151,8 @@ ul {
 
 /* Animations - Now handled by GSAP */
 .fade-in-up {
-  opacity: 0;
-  transform: translateY(40px);
+  opacity: 1;
+  transform: translateY(0);
   will-change: transform, opacity;
 }
 

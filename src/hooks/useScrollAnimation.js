@@ -16,23 +16,23 @@ export function useScrollAnimation() {
       const targets = gsap.utils.toArray('.fade-in-up');
       
       if (targets.length === 0) return;
+      
+      // Safety Hide: Set initial hidden state just before animation starts
+      // If JS fails, CSS keeps them visible. If JS runs, this hides them instantly for reveal.
+      gsap.set(targets, { opacity: 0, y: 40 });
 
       // Premium "Professional Glide" Reveal
-      gsap.fromTo(targets, 
-        { 
-          opacity: 0, 
-          y: 40,
-        },
+      gsap.to(targets, 
         {
           opacity: 1, 
           y: 0,
           duration: 1.2,
-          ease: 'power4.out', // Silky professional ease
-          stagger: 0.15, // Sequential reveal
+          ease: 'power4.out', 
+          stagger: 0.15, 
           scrollTrigger: {
             trigger: targets,
-            start: 'top 85%', // Trigger when element hits 85% of viewport height
-            toggleActions: 'play none none none', // Only play once
+            start: 'top 85%', 
+            toggleActions: 'play none none none', 
           }
         }
       );

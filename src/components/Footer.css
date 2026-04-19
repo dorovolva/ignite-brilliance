@@ -156,8 +156,23 @@
 }
 
 @media (max-width: 900px) {
+  .footer {
+    padding-top: 60px;
+  }
   .footer-container {
     grid-template-columns: 1fr 1fr;
+    gap: 50px 30px;
+  }
+  .brand-col {
+    grid-column: span 2;
+    text-align: center;
+    align-items: center;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    padding-bottom: 40px;
+    margin-bottom: 20px;
+  }
+  .footer-desc {
+    max-width: 500px;
   }
 }
 
@@ -165,5 +180,21 @@
   .footer-container {
     grid-template-columns: 1fr;
     gap: 40px;
+  }
+  .brand-col {
+    grid-column: span 1;
+  }
+  .footer-col {
+    align-items: center;
+    text-align: center;
+  }
+  .footer-heading::after {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .footer-contact li {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
   }
 }

@@ -202,3 +202,27 @@
   .mobile-only { display: block; }
   .navbar { position: relative; } /* allow dropdown to position below navbar */
 }
+
+/* Notification Dot */
+.nav-notif-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--primary-red);
+  border-radius: 50%;
+  margin-left: 5px;
+  box-shadow: 0 0 10px rgba(192, 0, 26, 0.5);
+  animation: pulse-dot 1.5s infinite;
+}
+
+.nav-notif-dot.mobile {
+  width: 10px;
+  height: 10px;
+  vertical-align: middle;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.6; }
+  100% { transform: scale(1); opacity: 1; }
+}

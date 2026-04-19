@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail } from 'lucide-react';
+import { api } from '../services/api';
 import './Footer.css';
 
 
 const Footer = () => {
+  const [settings, setSettings] = useState(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+       try {
+         const data = await api.getSettings();
+         setSettings(data);
+       } catch (e) {}
+    };
+    fetchSettings();
+  }, []);
+
   return (
     <footer className="footer section">
       <div className="container footer-container">
@@ -12,7 +25,7 @@ const Footer = () => {
         {/* Column 1 */}
         <div className="footer-col brand-col">
           <div className="footer-logo">
-             <img src="/assets/logo-white.png" alt="Ignite Brilliance" onError={(e) => {
+             <img src={settings?.logoUrl || "/assets/logo-white.png"} alt="Ignite Brilliance" onError={(e) => {
                e.target.style.display = 'none';
                e.target.nextSibling.style.display = 'block';
              }} />
@@ -20,13 +33,24 @@ const Footer = () => {
                Ignite Brilliance
              </span>
           </div>
-          <h4 className="footer-tagline">Right Education for the Bright Future</h4>
+          <h4 className="footer-tagline">
+            {settings?.footerTagline || 'Right Education for the Bright Future'}
+          </h4>
           <p className="footer-desc">
             Kerala's first AI-powered single-window career and government services centre.
           </p>
-          <a href="https://instagram.com/brillianceignite_" target="_blank" rel="noreferrer" className="social-link">
-             @brillianceignite_
-          </a>
+          <div className="social-links">
+            {settings?.instagramUrl && (
+              <a href={settings.instagramUrl} target="_blank" rel="noreferrer" className="social-link">
+                Instagram
+              </a>
+            )}
+            {settings?.facebookUrl && (
+              <a href={settings.facebookUrl} target="_blank" rel="noreferrer" className="social-link">
+                Facebook
+              </a>
+            )}
+          </div>
         </div>
 
         {/* Column 2 */}
@@ -62,22 +86,25 @@ const Footer = () => {
           <ul className="footer-contact">
             <li>
               <MapPin size={18} />
-              <span>Payyavoor, Kannur – 670633</span>
+              <span>{settings?.address || 'Payyavoor, Kannur – 670633'}</span>
             </li>
             <li>
               <Phone size={18} />
               <div className="phone-list">
-                <a href="tel:+919456241625">+91 9456 241 625</a>
-                <a href="tel:+917306241625">+91 7306 241 625</a>
-                <a href="tel:+918281326726">+91 8281 326 726</a>
+                {settings?.contactPhone1 && <a href={`tel:${settings.contactPhone1}`}>{settings.contactPhone1}</a>}
+                {settings?.contactPhone2 && <a href={`tel:${settings.contactPhone2}`}>{settings.contactPhone2}</a>}
+                {settings?.contactPhone3 && <a href={`tel:${settings.contactPhone3}`}>{settings.contactPhone3}</a>}
+                {!settings && <a href="tel:+919456241625">+91 9456 241 625</a>}
               </div>
             </li>
             <li>
               <Mail size={18} />
-              <a href="mailto:ignitebrilliance26@gmail.com">ignitebrilliance26@gmail.com</a>
+              <a href={`mailto:${settings?.contactEmail || 'ignitebrilliance26@gmail.com'}`}>
+                {settings?.contactEmail || 'ignitebrilliance26@gmail.com'}
+              </a>
             </li>
           </ul>
-          <a href="https://maps.google.com/?q=Payyavoor,Kannur" target="_blank" rel="noreferrer" className="footer-directions">
+          <a href={settings?.mapsUrl || "https://maps.google.com/?q=Payyavoor,Kannur"} target="_blank" rel="noreferrer" className="footer-directions">
             Get Directions &rarr;
           </a>
         </div>
@@ -86,7 +113,7 @@ const Footer = () => {
 
       <div className="container">
         <div className="footer-bottom">
-          <p>&copy; 2026 Ignite Brilliance Ekajalaka Kendra. All rights reserved. | A Project Under DAKHS Digital Revolution Pvt. Ltd.</p>
+          <p>&copy; {new Date().getFullYear()} Ignite Brilliance Ekajalaka Kendra. All rights reserved. | A Project Under DAKHS Digital Revolution Pvt. Ltd.</p>
           <p className="footer-dev">
             Developed by{' '}
             <a href="https://dorovolva.vercel.app" target="_blank" rel="noreferrer" className="footer-dev-link">

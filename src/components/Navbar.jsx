@@ -3,11 +3,13 @@ import { NavLink, Link, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Button from './ui/Button';
 import './Navbar.css';
+import { api } from '../services/api';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [hasNewNews, setHasNewNews] = useState(false);
+  const [settings, setSettings] = useState(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -15,12 +17,35 @@ const Navbar = () => {
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', handleScroll);
+    
+    // Check for new news and fetch settings for logo
+    const fetchData = async () => {
+      try {
+        const lastSeenStr = localStorage.getItem('ib_news_last_seen') || new Date(0).toISOString();
+        const [newsData, settingsData] = await Promise.all([
+          api.getNews(),
+          api.getSettings()
+        ]);
+        
+        const hasUnseen = newsData.some(a => a.status === 'Published' && new Date(a.date) > new Date(lastSeenStr));
+        setHasNewNews(hasUnseen);
+        setSettings(settingsData);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchData();
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
+  // Close mobile menu and mark news as seen if navigating to news page
   useEffect(() => {
     setMobileMenuOpen(false);
+    if (location.pathname === '/news') {
+      localStorage.setItem('ib_news_last_seen', new Date().toISOString());
+      setHasNewNews(false);
+    }
   }, [location.pathname]);
 
   return (
@@ -29,7 +54,7 @@ const Navbar = () => {
         {/* LOGO */}
         <Link to="/" className="nav-logo">
            <img 
-             src="/Ignite_Brilliance_Logo_2.png" 
+             src={settings?.logoUrl || "/Ignite_Brilliance_Logo_2.png"} 
              alt="Ignite Brilliance" 
              style={{ height: '50px', objectFit: 'contain' }}
            />
@@ -59,6 +84,10 @@ const Navbar = () => {
           </div>
 
           <NavLink to="/government-services" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Government Services</NavLink>
+          <NavLink to="/news" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>
+            News {hasNewNews && <span className="nav-notif-dot"></span>}
+          </NavLink>
+          <NavLink to="/gallery" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Gallery</NavLink>
           <NavLink to="/contact" className={({isActive}) => isActive ? "nav-link active" : "nav-link"}>Contact</NavLink>
         </div>
 
@@ -86,6 +115,8 @@ const Navbar = () => {
           <NavLink to="/about" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>About</NavLink>
           <NavLink to="/career-services" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Career & Education</NavLink>
           <NavLink to="/government-services" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Government Services</NavLink>
+          <NavLink to="/news" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>News</NavLink>
+          <NavLink to="/gallery" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Gallery</NavLink>
           <NavLink to="/contact" className="mobile-link" onClick={() => setMobileMenuOpen(false)}>Contact</NavLink>
           <div className="mobile-cta-wrapper">
              <Button to="/contact" variant="primary" style={{width: '100%'}} onClick={() => setMobileMenuOpen(false)}>Book a Session &rarr;</Button>

@@ -1,0 +1,154 @@
+.notif-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+}
+
+.notif-popup {
+  background: white;
+  width: 100%;
+  max-width: 400px;
+  border-radius: 24px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.25);
+}
+
+.notif-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: #f0f0f0;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+}
+
+.notif-close:hover {
+  background: #e0e0e0;
+  transform: rotate(90deg);
+}
+
+.notif-content, .notif-success {
+  padding: 40px;
+  text-align: center;
+}
+
+.notif-icon-box {
+  width: 70px;
+  height: 70px;
+  background: rgba(192, 0, 26, 0.1);
+  color: var(--primary-red);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.notif-icon {
+  width: 36px;
+  height: 36px;
+  animation: ring 4s infinite ease-in-out;
+}
+
+@keyframes ring {
+  0%, 100% { transform: rotate(0deg); }
+  5%, 15%, 25% { transform: rotate(10deg); }
+  10%, 20%, 30% { transform: rotate(-10deg); }
+  35% { transform: rotate(0deg); }
+}
+
+.notif-content h3, .notif-success h3 {
+  font-size: 1.5rem;
+  margin-bottom: 12px;
+  font-family: var(--font-h1);
+}
+
+.notif-content p, .notif-success p {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 30px;
+}
+
+.notif-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.notif-input {
+  padding: 14px 20px;
+  border-radius: 12px;
+  border: 2px solid #eee;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.notif-input:focus {
+  border-color: var(--primary-red);
+}
+
+.notif-submit {
+  padding: 14px;
+  background: var(--primary-red);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s, background 0.3s;
+}
+
+.notif-submit:hover {
+  background: #a00016;
+  transform: translateY(-2px);
+}
+
+.notif-maybe {
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 0.85rem;
+  margin-top: 16px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.success-icon-box {
+  width: 80px;
+  height: 80px;
+  background: #2e7d32;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+}
+
+.animate-pop-in {
+  animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}

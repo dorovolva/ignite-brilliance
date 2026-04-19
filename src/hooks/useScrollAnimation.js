@@ -1,35 +1,49 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function useScrollAnimation() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            // Optional: unobserve after animating to only animate once
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.1, // Trigger when 10% visible
-        rootMargin: '0px 0px -50px 0px'
-      }
-    );
+    // Clear any existing ScrollTriggers to prevent duplicates on route change
+    ScrollTrigger.getAll().forEach(st => st.kill());
 
-    // Give react time to render DOM
-    const timeout = setTimeout(() => {
-      const hiddenElements = document.querySelectorAll('.fade-in-up');
-      hiddenElements.forEach((el) => observer.observe(el));
-    }, 100);
+    const batchAnimation = () => {
+      const targets = gsap.utils.toArray('.fade-in-up');
+      
+      if (targets.length === 0) return;
+
+      // Premium "Professional Glide" Reveal
+      gsap.fromTo(targets, 
+        { 
+          opacity: 0, 
+          y: 40,
+        },
+        {
+          opacity: 1, 
+          y: 0,
+          duration: 1.2,
+          ease: 'power4.out', // Silky professional ease
+          stagger: 0.15, // Sequential reveal
+          scrollTrigger: {
+            trigger: targets,
+            start: 'top 85%', // Trigger when element hits 85% of viewport height
+            toggleActions: 'play none none none', // Only play once
+          }
+        }
+      );
+    };
+
+    // Small timeout to ensure DOM is ready
+    const timer = setTimeout(batchAnimation, 200);
 
     return () => {
-      clearTimeout(timeout);
-      observer.disconnect();
+      clearTimeout(timer);
+      ScrollTrigger.getAll().forEach(st => st.kill());
     };
   }, [pathname]);
 }

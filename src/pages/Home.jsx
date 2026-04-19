@@ -1,10 +1,41 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { ChevronRight, GraduationCap, Building, Star, Award, BookOpen, Brain, Users } from 'lucide-react';
 import Button from '../components/ui/Button';
 import Badge from '../components/ui/Badge';
+import LatestUpdates from '../components/LatestUpdates';
+import { api } from '../services/api';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import './Home.css';
 
 const Home = () => {
+  const [settings, setSettings] = useState(null);
+  const mascotRef = useRef(null);
+
+  useEffect(() => {
+    const fetchSettings = async () => {
+      try {
+        const data = await api.getSettings();
+        setSettings(data);
+      } catch (e) {}
+    };
+    fetchSettings();
+
+    // Subtle Mascot Parallax
+    if (mascotRef.current) {
+      gsap.to(mascotRef.current, {
+        y: -50,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero-section',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: true
+        }
+      });
+    }
+  }, []);
+
   return (
     <div className="home-page">
       {/* SECTION 1 - HERO */}
@@ -14,7 +45,7 @@ const Home = () => {
             <Badge variant="primary" className="hero-badge">Kannur's First Single Window Career Centre</Badge>
             <h1>Find Your Path.<br/>One Centre.<br/>Every Answer.</h1>
             <p className="hero-subline">
-              Kerala's most trusted destination for AI-powered career counselling, college admissions, and government services — all in one place. Serving students from Grade 5 to postgraduate.
+              {settings?.heroTagline || "Kerala's most trusted destination for AI-powered career counselling, college admissions, and government services — all in one place. Serving students from Grade 5 to postgraduate."}
             </p>
             <div className="hero-ctas">
               <Button to="/contact" variant="purple">Book a Free Counselling Session &rarr;</Button>
@@ -27,8 +58,8 @@ const Home = () => {
           </div>
           
           <div className="hero-visual fade-in-up hide-on-mobile">
-             <div className="hero-image-wrapper">
-               <img src="/masot.png" alt="Ignite Brilliance Mascot" className="mascot-img" />
+             <div className="hero-image-wrapper" ref={mascotRef}>
+                <img src={settings?.heroImageUrl || "/masot.png"} alt="Ignite Brilliance Mascot" className="mascot-img" />
              </div>
           </div>
         </div>
@@ -174,6 +205,9 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* NEW SECTION - LATEST UPDATES */}
+      <LatestUpdates />
 
       {/* SECTION 6 - TESTIMONIALS */}
       <section className="section testimonials-section alt-bg">

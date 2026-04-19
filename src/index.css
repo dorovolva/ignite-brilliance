@@ -20,20 +20,28 @@
   --font-body: 'Plus Jakarta Sans', sans-serif;
 
   /* Layout */
-  --max-width: 1080px;
-  --section-py: 60px;
-  --section-py-mobile: 40px;
+  --max-width: 1200px;
+  --section-py: 80px;
+  --section-py-mobile: 50px;
   --gap: 20px;
   
   /* Radii */
-  --radius-card: 12px;
-  --radius-button: 8px;
+  --radius-card: 16px;
+  --radius-button: 10px;
   --radius-pill: 100px;
 }
 
 /* Global base font — scales everything proportionally */
 html {
-  font-size: 14px; /* was effectively 16px; this shrinks all rem-based values */
+  font-size: 16px;
+}
+
+@media (max-width: 1400px) {
+  html { font-size: 15px; }
+}
+
+@media (max-width: 1080px) {
+  html { font-size: 14px; }
 }
 
 * {
@@ -46,38 +54,38 @@ body {
   font-family: var(--font-body);
   color: var(--text-primary);
   background-color: var(--bg-white);
-  line-height: 1.7;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-primary);
   margin-bottom: 0.75rem;
+  line-height: 1.2;
 }
 
 h1 {
   font-family: var(--font-h1);
   font-weight: 700;
-  font-size: clamp(2rem, 3.5vw, 2.75rem);
-  line-height: 1.1;
+  font-size: clamp(2.2rem, 5vw, 4.5rem);
   letter-spacing: -0.02em;
 }
 
 h2 {
   font-family: var(--font-h2);
   font-weight: 600;
-  font-size: clamp(1.5rem, 2.5vw, 1.9rem);
-  line-height: 1.2;
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
 }
 
 h3 {
   font-family: var(--font-body);
   font-weight: 600;
-  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-size: clamp(1.2rem, 2vw, 1.5rem);
 }
 
 p {
-  font-size: 13px;
+  font-size: 1rem;
   color: var(--text-secondary);
   margin-bottom: 1.25rem;
 }
@@ -97,7 +105,7 @@ ul {
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 0 5%;
 }
 
 .section {
@@ -113,32 +121,56 @@ ul {
 }
 
 @media (max-width: 768px) {
-  html {
-    font-size: 13px;
-  }
-
   .section {
     padding: var(--section-py-mobile) 0;
   }
+  .container {
+    padding: 0 20px;
+  }
 }
 
-/* Animations */
+@media (max-width: 480px) {
+  html {
+     font-size: 13px;
+  }
+}
+
+/* Animations - Now handled by GSAP */
 .fade-in-up {
   opacity: 0;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  transform: translateY(40px);
+  will-change: transform, opacity;
 }
 
-.fade-in-up.visible {
-  opacity: 1;
-  transform: translateY(0);
+/* Premium Hover Transitions */
+.hover-shadow, .pillar-card, .audience-card, .testimonial-card, a, button {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
 
-.hover-shadow {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+img {
+  max-width: 100%;
+  height: auto;
+  image-rendering: high-quality;
+  content-visibility: auto; /* Optimizes long page rendering */
 }
 
-.hover-shadow:hover {
-  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-  transform: translateY(-4px);
+section {
+  contain: layout; /* Helps with layout stability during scroll */
+}
+
+/* Admin Utilities */
+.admin-loading, .admin-error {
+  padding: 40px;
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--surface-light);
+  border-radius: var(--radius-card);
+  border: 1px solid var(--border-light);
+  margin: 20px 0;
+}
+
+.admin-error {
+  color: var(--primary-red);
+  background: #FFF8F8;
 }

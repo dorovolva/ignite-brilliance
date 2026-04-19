@@ -1,8 +1,9 @@
-// API Interface for Google Apps Script Backend (Mock Data Fallback for Development)
+// API Interface for Google Apps Script Backend (Hybrid Logic)
 
-// To deploy: copy Code.gs to your Google Apps Script project, deploy as web app, and paste the URL below
 const API_URL = import.meta.env.VITE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbxU4mw7zNYa4zUO_nIBRMzOkRsh9rB-arkCt2HKyo1M_nFyeGMdjpw_2ICBpHrHZEK-/exec'; 
-const USE_MOCK = !API_URL; // If no URL provided, we use mock storage for development
+
+// ACTIONS TO BE HANDLED BY APPS SCRIPT
+const REMOTE_ACTIONS = ['getNews', 'addNews', 'updateNews', 'deleteNews', 'uploadToDrive'];
 
 // Helper to clear all cache variants for a specific action
 const clearCacheFamily = (action) => {
@@ -11,7 +12,7 @@ const clearCacheFamily = (action) => {
     const key = localStorage.key(i);
     if (key && key.startsWith(prefix)) {
       localStorage.removeItem(key);
-      i--; // Adjust index after removal
+      i--; 
     }
   }
 };
@@ -19,7 +20,7 @@ const clearCacheFamily = (action) => {
 // Helper wrapper for fetch with 5-minute caching
 async function fetchAPI(action, params = {}, method = 'GET') {
   const CACHE_KEY = `ib_cache_${action}_${JSON.stringify(params)}`;
-  const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+  const CACHE_DURATION = 5 * 60 * 1000; 
 
   // Only cache public GET requests
   const isPublicGET = method === 'GET' && ['getNews', 'getGallery', 'getSettings', 'getLogs'].includes(action);
@@ -29,12 +30,15 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     if (cached) {
       const { data, timestamp } = JSON.parse(cached);
       if (Date.now() - timestamp < CACHE_DURATION) {
-        return data; // Return fresh cache
+        return data; 
       }
     }
   }
 
-  if (USE_MOCK) {
+  // HYBRID ROUTING LOGIC
+  const useRemote = REMOTE_ACTIONS.includes(action) && API_URL;
+
+  if (!useRemote) {
     const data = await handleMockAPI(action, params, method);
     if (isPublicGET) {
       localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
@@ -42,6 +46,7 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     return data;
   }
 
+  // REMOTE EXECUTION
   const token = sessionStorage.getItem('adminToken') || '';
   const url = new URL(API_URL);
   url.searchParams.append('action', action);
@@ -63,67 +68,66 @@ async function fetchAPI(action, params = {}, method = 'GET') {
     const data = await res.json();
     if (data.error) throw new Error(data.error);
 
-    // Update cache on success
     if (isPublicGET) {
       localStorage.setItem(CACHE_KEY, JSON.stringify({ data, timestamp: Date.now() }));
     }
 
     return data;
   } catch (err) {
-    // If fetch fails, try to return stale cache as fallback
-    if (isPublicGET) {
-      const cached = localStorage.getItem(CACHE_KEY);
-      if (cached) {
-        console.warn('API fetch failed, using stale cache fallback');
-        return JSON.parse(cached).data;
-      }
-    }
-    throw err;
+    console.error(`Remote API error for ${action}:`, err);
+    // FALLBACK TO MOCK ON ERROR TO PREVENT CRACKED PAGE
+    return handleMockAPI(action, params, method);
   }
 }
 
-// ------ MOCK API LOGIC ------ //
-const MOCK_DB = {
+// ------ PERSISTENT MOCK DB LOGIC ------ //
+const INITIAL_MOCK_DB = {
   news: [
-    { id: '1', title: 'KEAM 2026 dates announced', category: 'Exam News', summary: 'The official dates for KEAM 2026 are out.', body: '<p>The Kerala Engineering Architecture Medical (KEAM) 2026 dates have been officially announced. Students requested to start preparation.</p>', status: 'Published', date: new Date().toISOString() },
-    { id: '2', title: 'Scholarship up to 50% for top scorers', category: 'Scholarship', summary: 'Top students can avail massive discounts.', body: '<p>Announcing 50% scholarships based on merit.</p>', status: 'Published', date: new Date().toISOString() }
+    { id: '1', title: 'Welcome to Ignite Brilliance', category: 'General', summary: 'Connecting you to a shared future.', body: '<p>Loading your news from the shared database...</p>', status: 'Published', date: new Date().toISOString() }
   ],
   gallery: [
     { id: '1', url: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&q=80', caption: 'Student Session', category: 'Counselling Sessions', date: new Date().toISOString() },
     { id: '2', url: 'https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&fit=crop&q=80', caption: 'Career Fair 2025', category: 'Events', date: new Date().toISOString() }
   ],
   settings: {
-    contactPhone1: '+91 98765 43210',
+    contactPhone1: '+91 9456 241 625',
     contactEmail: 'hello@ignitebrilliance.com',
-    whatsapp: '+919876543210',
+    whatsapp: '+919456241625',
     address: 'Payyavoor Angadi Complex , Block D , Third Floor, Payyavoor-Sreekandapuram Road, 670633',
     heroTagline: 'Kerala\'s Premier Centre for Career Planning & Government Services',
     bannerActive: true,
     bannerText: 'KEAM 2026 registration now open — Contact us for guidance!',
     bannerColor: 'red'
   },
-  logs: [
-    { timestamp: new Date().toISOString(), action: 'System Initialization', details: 'Mock DB loaded' }
-  ]
+  logs: []
+};
+
+// Load or Init MOCK_DB
+let MOCK_DB = JSON.parse(localStorage.getItem('ib_mock_db')) || INITIAL_MOCK_DB;
+
+const saveMockDB = () => {
+  localStorage.setItem('ib_mock_db', JSON.stringify(MOCK_DB));
 };
 
 async function handleMockAPI(action, params, method) {
-  await new Promise(r => setTimeout(r, 500)); // Simulate network
+  await new Promise(r => setTimeout(r, 200)); 
   
-  // Auth Check
   const publicActions = ['login', 'getNews', 'getGallery', 'getSettings', 'subscribe'];
   if (!publicActions.includes(action)) {
     const token = sessionStorage.getItem('adminToken');
     if (!token) throw new Error('Unauthorized');
   }
 
-  // Generate unique ID
   const newId = () => Math.random().toString(36).substr(2, 9);
-  const logAction = (act, det) => MOCK_DB.logs.unshift({ timestamp: new Date().toISOString(), action: act, details: det });
+  const logAction = (act, det) => {
+    MOCK_DB.logs.unshift({ timestamp: new Date().toISOString(), action: act, details: det });
+    if (MOCK_DB.logs.length > 20) MOCK_DB.logs.pop();
+    saveMockDB();
+  };
 
   switch(action) {
     case 'login':
-      if (params.pass === 'admin123') return { token: 'mock-session-token-' + Date.now() };
+      if (params.pass === 'ignite#brilliance*') return { token: 'mock-session-token-' + Date.now() };
       throw new Error('Incorrect password');
       
     case 'getNews': return MOCK_DB.news;
@@ -162,12 +166,10 @@ async function handleMockAPI(action, params, method) {
       logAction('Changed Password', 'Admin password updated');
       return { success: true };
 
-    case 'getLogs': return MOCK_DB.logs.slice(0, 5); // Return last 5
+    case 'getLogs': return MOCK_DB.logs.slice(0, 10);
     
     case 'uploadToDrive':
-      logAction('Uploaded Mock File', params.filename);
-      // For local development without a backend, we just return the raw base64 string 
-      // so the browser renders it perfectly without needing external storage!
+      logAction('Uploaded Local File', params.filename);
       return { url: params.base64, success: true };
       
     case 'subscribe':

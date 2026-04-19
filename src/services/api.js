@@ -1,7 +1,7 @@
 // API Interface for Google Apps Script Backend (Mock Data Fallback for Development)
 
 // To deploy: copy Code.gs to your Google Apps Script project, deploy as web app, and paste the URL below
-const API_URL = import.meta.env.VITE_APPS_SCRIPT_URL || ''; 
+const API_URL = import.meta.env.VITE_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbxU4mw7zNYa4zUO_nIBRMzOkRsh9rB-arkCt2HKyo1M_nFyeGMdjpw_2ICBpHrHZEK-/exec'; 
 const USE_MOCK = !API_URL; // If no URL provided, we use mock storage for development
 
 // Helper to clear all cache variants for a specific action

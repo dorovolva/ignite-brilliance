@@ -1,7 +1,7 @@
 .hero-section {
   height: 100vh;
   min-height: 600px;
-  max-height: 1200px; /* Constrain vertical blow-up on 4K portraits */
+  max-height: 2000px; /* Constrain vertical blow-up on 4K/8K portraits */
   height: 100dvh;
   display: flex;
   align-items: center;
@@ -330,10 +330,21 @@
   
   .cta-buttons {
     flex-direction: column;
+    width: 100%;
+  }
+  
+  .cta-buttons a, .cta-buttons button {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
   }
 }
 
 @media (max-width: 480px) {
+  .hero-section {
+    padding: 100px 0 40px;
+  }
+
   .pillars-grid {
     grid-template-columns: 1fr;
   }
